@@ -1,0 +1,34 @@
+export class UserEmail {
+  private static readonly EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  private constructor(private readonly email: string) {
+    const normalizedEmail = this.normalize(email);
+    this.validateRequired(normalizedEmail);
+    this.validateRegex(normalizedEmail);
+    this.email = normalizedEmail;
+  }
+
+  static from(value: string): UserEmail {
+    return new UserEmail(value);
+  }
+
+  private normalize(value: string): string {
+    return value?.trim().toLowerCase();
+  }
+
+  private validateRequired(value: string): void {
+    if (!value) {
+      throw new Error('Email is required');
+    }
+  }
+
+  private validateRegex(value: string): void {
+    if (!UserEmail.EMAIL_REGEX.test(value)) {
+      throw new Error('Email invalid format');
+    }
+  }
+
+  toPrimitives(): string {
+    return this.email;
+  }
+}
