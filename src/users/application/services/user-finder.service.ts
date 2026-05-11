@@ -3,6 +3,7 @@ import { User } from '../../domain/entities/user.entity';
 import { UserId } from '../../domain/value-objects/user-id.value-object';
 import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
 import { Injectable } from '@nestjs/common';
+import { UserEmail } from '../../domain/value-objects/user-email.value-object';
 
 @Injectable()
 export class UserFinderService {
@@ -17,5 +18,10 @@ export class UserFinderService {
     }
 
     return user;
+  }
+
+  async findByEmail(email: string): Promise<User | undefined> {
+    const userEmail = UserEmail.from(email);
+    return this.repository.findByEmail(userEmail);
   }
 }

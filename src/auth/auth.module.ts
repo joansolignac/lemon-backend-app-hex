@@ -3,26 +3,19 @@ import { LoginUseCase } from './application/use-cases/login.use.case';
 import { UsersModule } from '../users/users.module';
 import { ValidateCredentialsService } from './application/services/validate-credentials.service';
 import { HashModule } from '../shared/infrastructure/security/hash/hash.module';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtStrategy } from './infrastructure/passport/strategies/access-token.strategy';
 import { TokenService } from './domain/services/token.service';
 import { AuthController } from './infrastructure/http/controllers/auth.controller';
-import { NestJwtService } from './infrastructure/jwt/nestjs-jwt.service';
+import { NestjsJwtService } from './infrastructure/jwt/nestjs-jwt.service';
+import { RefreshTokenUseCase } from './application/use-cases/refresh-token-use-case';
+import { AuthSharedModule } from '../shared/infrastructure/security/auth/auth-shared.module';
 
 @Module({
-  providers: [
-    LoginUseCase,
-    ValidateCredentialsService,
-    JwtStrategy,
-    {
-      provide: TokenService,
-      useClass: NestJwtService,
-    },
-  ],
   imports: [
     UsersModule,
     HashModule,
+    AuthSharedModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -34,7 +27,16 @@ import { NestJwtService } from './infrastructure/jwt/nestjs-jwt.service';
       }),
     }),
   ],
-  exports: [JwtModule, JwtStrategy],
+  providers: [
+    LoginUseCase,
+    RefreshTokenUseCase,
+    ValidateCredentialsService,
+    {
+      provide: TokenService,
+      useClass: NestjsJwtService,
+    },
+  ],
   controllers: [AuthController],
+  exports: [JwtModule],
 })
 export class AuthModule {}

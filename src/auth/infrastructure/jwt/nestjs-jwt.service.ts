@@ -11,7 +11,7 @@ import { JwtTokens } from '../../domain/value-objects/jwt-tokens.value-object';
 import { TokenService } from '../../domain/services/token.service';
 
 @Injectable()
-export class NestJwtService extends TokenService {
+export class NestjsJwtService extends TokenService {
   constructor(
     private readonly configService: ConfigService,
 
@@ -24,15 +24,15 @@ export class NestJwtService extends TokenService {
     const primitivePayload = payload.toPrimitives();
 
     const accessToken = await this.jwtService.signAsync(primitivePayload, {
-      secret: this.configService.getOrThrow('JWT_ACCESS_SECRET'),
+      secret: this.configService.getOrThrow('jwt.accessSecret'),
 
-      expiresIn: this.configService.getOrThrow('JWT_ACCESS_EXPIRES_IN'),
+      expiresIn: this.configService.getOrThrow('jwt.accessExpiresIn'),
     });
 
     const refreshToken = await this.jwtService.signAsync(primitivePayload, {
-      secret: this.configService.getOrThrow('JWT_REFRESH_SECRET'),
+      secret: this.configService.getOrThrow('jwt.refreshSecret'),
 
-      expiresIn: this.configService.getOrThrow('JWT_REFRESH_EXPIRES_IN'),
+      expiresIn: this.configService.getOrThrow('jwt.refreshExpiresIn'),
     });
 
     return JwtTokens.from({

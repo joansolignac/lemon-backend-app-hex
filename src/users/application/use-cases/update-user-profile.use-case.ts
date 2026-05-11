@@ -3,6 +3,7 @@ import { UserFinderService } from '../services/user-finder.service';
 import { UserName } from '../../domain/value-objects/user-name.value-object';
 import { UserEmail } from '../../domain/value-objects/user-email.value-object';
 import { Injectable } from '@nestjs/common';
+import { UserEmailAlreadyExistsException } from '../../domain/exceptions/user-email-already-exists.exception';
 
 @Injectable()
 export class UpdateUserProfileUseCase {
@@ -20,7 +21,23 @@ export class UpdateUserProfileUseCase {
     const userName = params.name ? UserName.from(params.name) : undefined;
     const userEmail = params.email ? UserEmail.from(params.email) : undefined;
 
-    user.updateProfile({ name: userName, email: userEmail });
+    if (userEmail) {
+      const existsEmail = await this.userFinder.findByEmail(
+        userEmail.toPrimitives(),
+      );
+
+      if (
+        existsEmail &&
+        !(existsEmail.getId().toPrimitives() === user.getId().toPrimitives())
+      ) {
+        throw new UserEmailAlreadyExistsException();
+      }
+    }
+
+    user.updateProfile({
+      name: userName,
+      email: userEmail,
+    });
 
     await this.repository.save(user);
   }

@@ -13,8 +13,10 @@ import { UserFinderService } from './application/services/user-finder.service';
 import { PrismaModule } from '../shared/infrastructure/persistence/prisma/prisma.module';
 import { UpdateUserPasswordUseCase } from './application/use-cases/update-user-password.use-case';
 import { HashModule } from '../shared/infrastructure/security/hash/hash.module';
+import { AuthSharedModule } from '../shared/infrastructure/security/auth/auth-shared.module';
 
 @Module({
+  imports: [PrismaModule, HashModule, AuthSharedModule],
   providers: [
     CreateUserUseCase,
     FindUserByIdUseCase,
@@ -31,7 +33,6 @@ import { HashModule } from '../shared/infrastructure/security/hash/hash.module';
     },
   ],
   controllers: [UserController],
-  imports: [PrismaModule, HashModule],
   exports: [UserRepository, FindUserByIdUseCase],
 })
 export class UsersModule {}

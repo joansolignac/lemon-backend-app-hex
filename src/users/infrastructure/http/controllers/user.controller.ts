@@ -23,6 +23,10 @@ import { UpdateUserPasswordDto } from '../dtos/request/update-user-password.dto'
 import { UpdateUserPasswordUseCase } from '../../../application/use-cases/update-user-password.use-case';
 import { ActivateUserUseCase } from '../../../application/use-cases/activate-user.use-case';
 import { DeactivateUserUseCase } from '../../../application/use-cases/deactivate-user.use-case';
+import { UseAuth } from '../../../../shared/infrastructure/security/auth/decorators/use-auth.decorator';
+import { ROLE } from '../../../domain/value-objects/user-rol.value-object';
+import { CurrentUser } from '../../../../shared/infrastructure/security/auth/decorators/current-user.decorator';
+import { AuthenticatedUser } from '../../../../shared/domain/value-objects/authenticated-user.value-object';
 
 @Controller('users')
 export class UserController {
@@ -37,6 +41,7 @@ export class UserController {
   ) {}
 
   @Post()
+  @UseAuth(ROLE.ADMINISTRADOR)
   async create(@Body() dto: UserCreateDto): Promise<void> {
     await this.createUserUseCase.execute({
       role: dto.role,
@@ -47,6 +52,7 @@ export class UserController {
   }
 
   @Get('/:id')
+  @UseAuth(ROLE.ADMINISTRADOR)
   async findById(
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<UserResponseDto> {
@@ -55,6 +61,7 @@ export class UserController {
   }
 
   @Get()
+  @UseAuth(ROLE.ADMINISTRADOR)
   async getAllPaginated(
     @Query() query: PaginatedQueryDto,
   ): Promise<PaginatedResponseDto<UserResponseDto>> {
@@ -71,30 +78,37 @@ export class UserController {
     });
   }
 
-  @Patch('/:id')
+  @Patch('/profile')
+  @UseAuth(ROLE.ADMINISTRADOR, ROLE.SUPERVISOR)
   async updateProfile(
-    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() currentUser: AuthenticatedUser,
     @Body() dto: UpdateUserProfileDto,
   ): Promise<void> {
-    await this.updateUserProfileUseCase.execute(id, {
+    await this.updateUserProfileUseCase.execute(currentUser.getId(), {
       name: dto.name,
       email: dto.email,
     });
   }
 
-  @Patch('/:id/password')
+  @UseAuth(ROLE.ADMINISTRADOR, ROLE.SUPERVISOR)
+  @Patch('/password')
   async updatePassword(
-    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() currentUser: AuthenticatedUser,
     @Body() dto: UpdateUserPasswordDto,
   ): Promise<void> {
-    await this.updateUserPasswordUseCase.execute(id, dto.password);
+    await this.updateUserPasswordUseCase.execute(
+      currentUser.getId(),
+      dto.password,
+    );
   }
 
+  @UseAuth(ROLE.ADMINISTRADOR)
   @Patch('/:id/activate')
   async activate(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.activateUserUseCase.execute(id);
   }
 
+  @UseAuth(ROLE.ADMINISTRADOR)
   @Patch('/:id/deactivate')
   async deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.deactivateUserUseCase.execute(id);
