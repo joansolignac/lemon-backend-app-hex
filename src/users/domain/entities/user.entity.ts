@@ -75,28 +75,28 @@ export class User {
     );
   }
 
-  getId(): string {
-    return this.id.toPrimitives();
+  getId(): UserId {
+    return this.id;
   }
 
-  getRole(): string {
-    return this.role.toPrimitives();
+  getRole(): UserRole {
+    return this.role;
   }
 
-  getName(): string {
-    return this.name.toPrimitives();
+  getName(): UserName {
+    return this.name;
   }
 
-  getEmail(): string {
-    return this.email.toPrimitives();
+  getEmail(): UserEmail {
+    return this.email;
   }
 
-  getHashedPassword(): string {
-    return this.hashedPassword.toPrimitives();
+  getHashedPassword(): UserHashedPassword {
+    return this.hashedPassword;
   }
 
-  getStatus(): string {
-    return this.status.toPrimitives();
+  getStatus(): UserStatus {
+    return this.status;
   }
 
   getCreatedAt(): Date {

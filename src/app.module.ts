@@ -6,18 +6,21 @@ import { APP_CONFIG } from './shared/infrastructure/config/app.config';
 import { DATABASE_CONFIG } from './shared/infrastructure/config/database.config';
 import { VALIDATION_SCHEMA } from './shared/infrastructure/config/schema/validation.schema';
 import { HashModule } from './shared/infrastructure/security/hash/hash.module';
+import { AuthModule } from './auth/auth.module';
+import { JWT_CONFIG } from './shared/infrastructure/config/jwt.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [APP_CONFIG, DATABASE_CONFIG],
+      load: [APP_CONFIG, DATABASE_CONFIG, JWT_CONFIG],
       validationSchema: VALIDATION_SCHEMA,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     UsersModule,
     PrismaModule,
     HashModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

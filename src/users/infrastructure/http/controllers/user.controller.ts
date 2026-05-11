@@ -9,20 +9,20 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserCreateDto } from '../dtos/request/user-create.dto';
-import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
+import { CreateUserUseCase } from '../../../application/use-cases/create-user.use-case';
 import { UserResponseDto } from '../dtos/response/user-response.dto';
-import { toUserResponse } from '../mappers/user-response.mapper';
-import { FindUserByIdUseCase } from '../../application/use-cases/find-user-by-id.use.case';
-import { PaginatedQueryDto } from '../../../shared/infrastructure/dtos/request/paginated-query.dto';
-import { PaginatedResponseDto } from '../../../shared/infrastructure/dtos/response/paginated-response.dto';
-import { GetAllUsersPaginatedUseCase } from '../../application/use-cases/get-all-users-paginated.use-case';
-import { toPaginatedResponse } from '../../../shared/infrastructure/mappers/paginated-response.mapper';
+import { toUserResponse } from '../../mappers/user-response.mapper';
+import { FindUserByIdUseCase } from '../../../application/use-cases/find-user-by-id.use.case';
+import { PaginatedQueryDto } from '../../../../shared/infrastructure/dtos/request/paginated-query.dto';
+import { PaginatedResponseDto } from '../../../../shared/infrastructure/dtos/response/paginated-response.dto';
+import { GetAllUsersPaginatedUseCase } from '../../../application/use-cases/get-all-users-paginated.use-case';
+import { toPaginatedResponse } from '../../../../shared/infrastructure/mappers/paginated-response.mapper';
 import { UpdateUserProfileDto } from '../dtos/request/update-user-profile.dto';
-import { UpdateUserProfileUseCase } from '../../application/use-cases/update-user-profile.use-case';
+import { UpdateUserProfileUseCase } from '../../../application/use-cases/update-user-profile.use-case';
 import { UpdateUserPasswordDto } from '../dtos/request/update-user-password.dto';
-import { UpdateUserPasswordUseCase } from '../../application/use-cases/update-user-password.use-case';
-import { ActivateUserUseCase } from '../../application/use-cases/activate-user.use-case';
-import { DeactivateUserUseCase } from '../../application/use-cases/deactivate-user.use-case';
+import { UpdateUserPasswordUseCase } from '../../../application/use-cases/update-user-password.use-case';
+import { ActivateUserUseCase } from '../../../application/use-cases/activate-user.use-case';
+import { DeactivateUserUseCase } from '../../../application/use-cases/deactivate-user.use-case';
 
 @Controller('users')
 export class UserController {

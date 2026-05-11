@@ -6,7 +6,7 @@ import { GetAllUsersPaginatedUseCase } from './application/use-cases/get-all-use
 import { ActivateUserUseCase } from './application/use-cases/activate-user.use-case';
 import { UpdateUserRoleUseCase } from './application/use-cases/update-user-role.use-case';
 import { UpdateUserProfileUseCase } from './application/use-cases/update-user-profile.use-case';
-import { UserController } from './infrastructure/controllers/user.controller';
+import { UserController } from './infrastructure/http/controllers/user.controller';
 import { PrismaUserRepository } from './infrastructure/persistence/prisma/prisma-user.repository';
 import { UserRepository } from './domain/repositories/user.repository';
 import { UserFinderService } from './application/services/user-finder.service';
@@ -32,5 +32,6 @@ import { HashModule } from '../shared/infrastructure/security/hash/hash.module';
   ],
   controllers: [UserController],
   imports: [PrismaModule, HashModule],
+  exports: [UserRepository, FindUserByIdUseCase],
 })
 export class UsersModule {}

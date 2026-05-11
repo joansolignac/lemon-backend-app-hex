@@ -14,14 +14,14 @@ export class PrismaUserRepository extends UserRepository {
     super();
   }
   async save(user: User): Promise<void> {
-    const USER_ID = user.getId();
+    const USER_ID = user.getId().toPrimitives();
     const USER_DATA = {
       id: USER_ID,
-      role: user.getRole(),
-      name: user.getName(),
-      email: user.getEmail(),
-      hashedPassword: user.getHashedPassword(),
-      status: user.getStatus(),
+      role: user.getRole().toPrimitives(),
+      name: user.getName().toPrimitives(),
+      email: user.getEmail().toPrimitives(),
+      hashedPassword: user.getHashedPassword().toPrimitives(),
+      status: user.getStatus().toPrimitives(),
       createdAt: user.getCreatedAt(),
       updatedAt: user.getUpdatedAt(),
     };
