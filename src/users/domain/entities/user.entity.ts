@@ -1,9 +1,14 @@
-import { UserId } from '../value-objects/user-id.value-object';
-import { UserName } from '../value-objects/user-name.value-object';
-import { UserEmail } from '../value-objects/user-email.value-object';
-import { UserHashedPassword } from '../value-objects/user-hashed-password.value-object';
-import { UserStatus } from '../value-objects/user-status.value-object';
-import { UserRole } from '../value-objects/user-rol.volue-object';
+import { UserId } from '../value-objects/user-id.value-object.js';
+import { UserName } from '../value-objects/user-name.value-object.js';
+import { UserEmail } from '../value-objects/user-email.value-object.js';
+import { UserHashedPassword } from '../value-objects/user-hashed-password.value-object.js';
+import { UserStatus } from '../value-objects/user-status.value-object.js';
+import { UserRole } from '../value-objects/user-rol.value-object.js';
+import { UserUpdateNoChangesDetectedException } from '../exceptions/user-update-no-changes-detected.exception.js';
+import { UserRolAlreadyHasException } from '../exceptions/user-rol-already-has.exception.js';
+import { UserAlreadyInactiveException } from '../exceptions/user-already-inactive.exception.js';
+import { UserAlreadyActiveException } from '../exceptions/user-already-active.exception.js';
+import { UserInactiveException } from '../exceptions/user-inactive.exception.js';
 
 export class User {
   private constructor(
@@ -106,7 +111,7 @@ export class User {
     this.validateActive();
 
     if (!params.name && !params.email) {
-      throw new Error('No changes detected');
+      throw new UserUpdateNoChangesDetectedException();
     }
 
     if (params.name) {
@@ -132,7 +137,7 @@ export class User {
     this.validateActive();
 
     if (this.role.toPrimitives() === role.toPrimitives()) {
-      throw new Error('User already has this role');
+      throw new UserRolAlreadyHasException();
     }
 
     this.role = role;
@@ -142,7 +147,7 @@ export class User {
 
   activate(): void {
     if (this.status.isActive()) {
-      throw new Error('User is already active');
+      throw new UserAlreadyActiveException();
     }
 
     this.status = UserStatus.generateActive();
@@ -152,7 +157,7 @@ export class User {
 
   deactivate(): void {
     if (this.status.isInactive()) {
-      throw new Error('User is already inactive');
+      throw new UserAlreadyInactiveException();
     }
 
     this.status = UserStatus.generateInactive();
@@ -162,7 +167,7 @@ export class User {
 
   private validateActive(): void {
     if (this.status.isInactive()) {
-      throw new Error('User is inactive');
+      throw new UserInactiveException();
     }
   }
 

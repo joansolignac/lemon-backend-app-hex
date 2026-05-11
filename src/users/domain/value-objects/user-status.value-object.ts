@@ -1,3 +1,6 @@
+import { UserStatusRequiredException } from '../exceptions/user-status-required.exception.js';
+import { UserStatusInvalidException } from '../exceptions/user-status-invalid.exception.js';
+
 export const USER_STATUS = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
@@ -41,13 +44,13 @@ export class UserStatus {
 
   private validateRequired(value: string): void {
     if (!value) {
-      throw new Error('Status is required');
+      throw new UserStatusRequiredException();
     }
   }
 
   private validateType(value: string): void {
     if (!Object.values(USER_STATUS).includes(value as UserStatusType)) {
-      throw new Error('Status is not valid');
+      throw new UserStatusInvalidException();
     }
   }
 

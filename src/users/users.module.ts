@@ -12,11 +12,11 @@ import { UserRepository } from './domain/repositories/user.repository';
 import { UserFinderService } from './application/services/user-finder.service';
 import { PrismaModule } from '../shared/infrastructure/persistence/prisma/prisma.module';
 import { UpdateUserPasswordUseCase } from './application/use-cases/update-user-password.use-case';
+import { HashModule } from '../shared/infrastructure/security/hash/hash.module';
 
 @Module({
   providers: [
     CreateUserUseCase,
-    DeactivateUserUseCase,
     FindUserByIdUseCase,
     GetAllUsersPaginatedUseCase,
     ActivateUserUseCase,
@@ -31,6 +31,6 @@ import { UpdateUserPasswordUseCase } from './application/use-cases/update-user-p
     },
   ],
   controllers: [UserController],
-  imports: [PrismaModule],
+  imports: [PrismaModule, HashModule],
 })
 export class UsersModule {}

@@ -1,4 +1,6 @@
 import { randomUUID } from 'node:crypto';
+import { UserIdRequiredException } from '../exceptions/user-id-required.exception.js';
+import { UserIdInvalidFormatException } from '../exceptions/user-id-invalid-format.exception.js';
 
 export class UserId {
   private static readonly UUID_REGEX =
@@ -25,13 +27,13 @@ export class UserId {
 
   private validateRequired(value: string): void {
     if (!value) {
-      throw new Error('Id is required');
+      throw new UserIdRequiredException();
     }
   }
 
   private validateRegex(value: string): void {
     if (!UserId.UUID_REGEX.test(value)) {
-      throw new Error('Id must be an UUID');
+      throw new UserIdInvalidFormatException();
     }
   }
 

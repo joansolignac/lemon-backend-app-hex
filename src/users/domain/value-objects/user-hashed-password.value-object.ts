@@ -1,3 +1,7 @@
+import { UserHashedPasswordRequiredException } from '../exceptions/user-hashed-password-required.exception.js';
+import { UserHashedPasswordTooLongException } from '../exceptions/user-hashed-password-too-long.exception.js';
+import { UserHashedPasswordInvalidFormatException } from '../exceptions/user-hashed-password-invalid-format.exception.js';
+
 export class UserHashedPassword {
   private static readonly HASH_REGEX = /^\$argon2(id|i|d)\$.*$/;
 
@@ -19,19 +23,19 @@ export class UserHashedPassword {
 
   private validateRequired(value: string): void {
     if (!value) {
-      throw new Error('Hashed password is required');
+      throw new UserHashedPasswordRequiredException();
     }
   }
 
   private validateLength(value: string): void {
     if (value.length > 255) {
-      throw new Error('Hashed password exceeds maximum length');
+      throw new UserHashedPasswordTooLongException();
     }
   }
 
   private validateRegex(value: string): void {
     if (!UserHashedPassword.HASH_REGEX.test(value)) {
-      throw new Error('Invalid hashed password format');
+      throw new UserHashedPasswordInvalidFormatException();
     }
   }
 

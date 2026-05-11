@@ -4,10 +4,14 @@ import { User } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserEmail } from '../../domain/value-objects/user-email.value-object';
 import { UserEmailAlreadyExistsException } from '../../domain/exceptions/user-email-already-exists.exception';
+import { HashService } from '../../../shared/domain/services/hash.service';
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(private readonly repository: UserRepository) {}
+  constructor(
+    private readonly repository: UserRepository,
+    private readonly hashService: HashService,
+  ) {}
 
   async execute(params: {
     role: string;
@@ -23,11 +27,13 @@ export class CreateUserUseCase {
       throw new UserEmailAlreadyExistsException();
     }
 
+    const hashedPassword = await this.hashService.hash(params.password);
+
     const user = User.create({
       role: params.role,
       name: params.name,
       email: params.email,
-      hashedPassword: params.password,
+      hashedPassword,
     });
 
     await this.repository.save(user);

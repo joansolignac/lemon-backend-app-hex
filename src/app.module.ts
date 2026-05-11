@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_CONFIG } from './shared/infrastructure/config/app.config';
 import { DATABASE_CONFIG } from './shared/infrastructure/config/database.config';
 import { VALIDATION_SCHEMA } from './shared/infrastructure/config/schema/validation.schema';
+import { HashModule } from './shared/infrastructure/security/hash/hash.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { VALIDATION_SCHEMA } from './shared/infrastructure/config/schema/validat
     }),
     UsersModule,
     PrismaModule,
+    HashModule,
   ],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserFinderService } from '../services/user-finder.service';
-import { UserRole } from '../../domain/value-objects/user-rol.volue-object';
+import { UserRole } from '../../domain/value-objects/user-rol.value-object';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

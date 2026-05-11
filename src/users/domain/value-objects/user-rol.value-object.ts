@@ -1,3 +1,6 @@
+import { UserRoleRequiredException } from '../exceptions/user-role-required.exception.js';
+import { UserRoleInvalidException } from '../exceptions/user-role-invalid.exception.js';
+
 export const ROLE = {
   ADMINISTRADOR: 'ADMINISTRADOR',
   SUPERVISOR: 'SUPERVISOR',
@@ -33,13 +36,13 @@ export class UserRole {
 
   private validateRequired(value: string): void {
     if (!value) {
-      throw new Error('Rol is required');
+      throw new UserRoleRequiredException();
     }
   }
 
   private validateType(value: string): void {
     if (!Object.values(ROLE).includes(value as Role)) {
-      throw new Error('Invalid type');
+      throw new UserRoleInvalidException();
     }
   }
 

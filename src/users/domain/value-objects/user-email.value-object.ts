@@ -1,3 +1,6 @@
+import { UserEmailRequiredException } from '../exceptions/user-email-required.exception.js';
+import { UserEmailInvalidFormatException } from '../exceptions/user-email-invalid-format.exception.js';
+
 export class UserEmail {
   private static readonly EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,13 +21,13 @@ export class UserEmail {
 
   private validateRequired(value: string): void {
     if (!value) {
-      throw new Error('Email is required');
+      throw new UserEmailRequiredException();
     }
   }
 
   private validateRegex(value: string): void {
     if (!UserEmail.EMAIL_REGEX.test(value)) {
-      throw new Error('Email invalid format');
+      throw new UserEmailInvalidFormatException();
     }
   }
 

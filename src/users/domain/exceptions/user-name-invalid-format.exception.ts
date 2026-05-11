@@ -1,8 +1,8 @@
 import { DomainException } from '../../../shared/domain/exceptions/domain.exception.js';
 import { DomainErrorCode } from '../../../shared/domain/exceptions/error-code.enum.js';
 
-export class UserEmailAlreadyExistsException extends DomainException {
+export class UserNameInvalidFormatException extends DomainException {
   constructor() {
-    super('User already exists', DomainErrorCode.USER_EMAIL_ALREADY_EXISTS);
+    super('Invalid name format', DomainErrorCode.USER_NAME_INVALID_FORMAT);
   }
 }

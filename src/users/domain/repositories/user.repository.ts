@@ -1,8 +1,8 @@
-import { User } from '../entities/user.entity';
-import { UserId } from '../value-objects/user-id.value-object';
-import { UserEmail } from '../value-objects/user-email.value-object';
-import { PaginatedParams } from '../../../shared/domain/value-objects/paginated-params.value-object';
-import { PaginatedResult } from '../../../shared/domain/value-objects/paginated-result.value-object';
+import { User } from '../entities/user.entity.js';
+import { UserId } from '../value-objects/user-id.value-object.js';
+import { UserEmail } from '../value-objects/user-email.value-object.js';
+import { PaginatedParams } from '../../../shared/domain/value-objects/paginated-params.value-object.js';
+import { PaginatedResult } from '../../../shared/domain/value-objects/paginated-result.value-object.js';
 
 export abstract class UserRepository {
   abstract save(user: User): Promise<void>;

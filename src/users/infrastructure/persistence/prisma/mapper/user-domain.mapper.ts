@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { User } from '../../../../domain/entities/user.entity';
 import { UserId } from '../../../../domain/value-objects/user-id.value-object';
-import { UserRole } from '../../../../domain/value-objects/user-rol.volue-object';
+import { UserRole } from '../../../../domain/value-objects/user-rol.value-object';
 import { UserName } from '../../../../domain/value-objects/user-name.value-object';
 import { UserEmail } from '../../../../domain/value-objects/user-email.value-object';
 import { UserHashedPassword } from '../../../../domain/value-objects/user-hashed-password.value-object';

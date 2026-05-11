@@ -1,4 +1,6 @@
-import { PaginatedParams } from './paginated-params.value-object';
+import { PaginatedParams } from './paginated-params.value-object.js';
+import { PaginatedResultDataInvalidException } from '../exceptions/paginated-result-data-invalid.exception.js';
+import { PaginatedResultTotalInvalidException } from '../exceptions/paginated-result-total-invalid.exception.js';
 
 export class PaginatedResult<T> {
   private constructor(
@@ -20,13 +22,13 @@ export class PaginatedResult<T> {
 
   private validateData(data: T[]) {
     if (!Array.isArray(data)) {
-      throw new Error('Data should be an array');
+      throw new PaginatedResultDataInvalidException();
     }
   }
 
   private validateTotal(value: number): void {
     if (value < 0) {
-      throw new Error(`Total cannot be negative`);
+      throw new PaginatedResultTotalInvalidException();
     }
   }
 
