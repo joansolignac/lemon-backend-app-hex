@@ -12,6 +12,14 @@ export class PaginatedParams {
     return new PaginatedParams(normalizedPage, normalizedLimit);
   }
 
+  getSkip(): number {
+    return (this.page - 1) * this.limit;
+  }
+
+  getTake(): number {
+    return this.limit;
+  }
+
   toPrimitives(): { page: number; limit: number } {
     return {
       page: this.page,

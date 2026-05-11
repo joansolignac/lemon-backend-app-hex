@@ -6,9 +6,8 @@ import { PaginatedResult } from '../../../shared/domain/value-objects/paginated-
 
 export abstract class UserRepository {
   abstract save(user: User): Promise<void>;
-  abstract findById(id: UserId): Promise<User>;
-  abstract findByEmail(email: UserEmail): Promise<User>;
-  abstract getAll(): Promise<User[]>;
+  abstract findById(id: UserId): Promise<User | undefined>;
+  abstract findByEmail(email: UserEmail): Promise<User | undefined>;
   abstract getAllPaginated(
     params: PaginatedParams,
   ): Promise<PaginatedResult<User>>;

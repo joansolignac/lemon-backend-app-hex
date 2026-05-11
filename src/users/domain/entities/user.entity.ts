@@ -86,6 +86,10 @@ export class User {
     return this.email.toPrimitives();
   }
 
+  getHashedPassword(): string {
+    return this.hashedPassword.toPrimitives();
+  }
+
   getStatus(): string {
     return this.status.toPrimitives();
   }

@@ -7,6 +7,11 @@ import { ActivateUserUseCase } from './application/use-cases/activate-user.use-c
 import { UpdateUserRoleUseCase } from './application/use-cases/update-user-role.use-case';
 import { UpdateUserProfileUseCase } from './application/use-cases/update-user-profile.use-case';
 import { UserController } from './infrastructure/controllers/user.controller';
+import { PrismaUserRepository } from './infrastructure/persistence/prisma/prisma-user.repository';
+import { UserRepository } from './domain/repositories/user.repository';
+import { UserFinderService } from './application/services/user-finder.service';
+import { PrismaModule } from '../shared/infrastructure/persistence/prisma/prisma.module';
+import { UpdateUserPasswordUseCase } from './application/use-cases/update-user-password.use-case';
 
 @Module({
   providers: [
@@ -18,7 +23,14 @@ import { UserController } from './infrastructure/controllers/user.controller';
     DeactivateUserUseCase,
     UpdateUserRoleUseCase,
     UpdateUserProfileUseCase,
+    UpdateUserPasswordUseCase,
+    UserFinderService,
+    {
+      provide: UserRepository,
+      useClass: PrismaUserRepository,
+    },
   ],
   controllers: [UserController],
+  imports: [PrismaModule],
 })
 export class UsersModule {}
