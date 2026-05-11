@@ -15,7 +15,6 @@ export class User {
     private status: UserStatus,
     private readonly createdAt: Date,
     private updatedAt: Date,
-    private deletedAt?: Date,
   ) {}
 
   static create(params: {
@@ -25,19 +24,24 @@ export class User {
     hashedPassword: string;
   }): User {
     const USER_ID = UserId.generate();
-    const userRole = UserRole.from(params.role);
-    const userName = UserName.from(params.name);
-    const userEmail = UserEmail.from(params.email);
-    const hashedPassword = UserHashedPassword.from(params.hashedPassword);
+    const USER_ROLE = UserRole.from(params.role);
+
+    const USER_NAME = UserName.from(params.name);
+
+    const USER_EMAIL = UserEmail.from(params.email);
+
+    const USER_PASSWORD = UserHashedPassword.from(params.hashedPassword);
+
     const USER_STATUS = UserStatus.generateActive();
+
     const NOW = new Date();
 
     return new User(
       USER_ID,
-      userRole,
-      userName,
-      userEmail,
-      hashedPassword,
+      USER_ROLE,
+      USER_NAME,
+      USER_EMAIL,
+      USER_PASSWORD,
       USER_STATUS,
       NOW,
       NOW,
@@ -53,7 +57,6 @@ export class User {
     status: UserStatus,
     createdAt: Date,
     updatedAt: Date,
-    deletedAt?: Date,
   ): User {
     return new User(
       id,
@@ -64,11 +67,38 @@ export class User {
       status,
       createdAt,
       updatedAt,
-      deletedAt,
     );
   }
 
-  updateProfile(params: { name?: string; email?: string }): void {
+  getId(): string {
+    return this.id.toPrimitives();
+  }
+
+  getRole(): string {
+    return this.role.toPrimitives();
+  }
+
+  getName(): string {
+    return this.name.toPrimitives();
+  }
+
+  getEmail(): string {
+    return this.email.toPrimitives();
+  }
+
+  getStatus(): string {
+    return this.status.toPrimitives();
+  }
+
+  getCreatedAt(): Date {
+    return this.createdAt;
+  }
+
+  getUpdatedAt(): Date {
+    return this.updatedAt;
+  }
+
+  updateProfile(params: { name?: UserName; email?: UserEmail }): void {
     this.validateActive();
 
     if (!params.name && !params.email) {
@@ -76,11 +106,11 @@ export class User {
     }
 
     if (params.name) {
-      this.name = UserName.from(params.name);
+      this.name = params.name;
     }
 
     if (params.email) {
-      this.email = UserEmail.from(params.email);
+      this.email = params.email;
     }
 
     this.touch();

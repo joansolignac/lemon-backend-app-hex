@@ -29,4 +29,20 @@ export class PaginatedResult<T> {
       throw new Error(`Total cannot be negative`);
     }
   }
+
+  getPage(): number {
+    return this.paginatedParams.toPrimitives().page;
+  }
+
+  getLimit(): number {
+    return this.paginatedParams.toPrimitives().limit;
+  }
+
+  getData(): T[] {
+    return this.data;
+  }
+
+  getTotal(): number {
+    return this.total;
+  }
 }

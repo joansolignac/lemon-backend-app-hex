@@ -2,7 +2,9 @@ import { UserRepository } from '../../domain/repositories/user.repository';
 import { PaginatedResult } from '../../../shared/domain/value-objects/paginated-result.value-object';
 import { User } from '../../domain/entities/user.entity';
 import { PaginatedParams } from '../../../shared/domain/value-objects/paginated-params.value-object';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class GetAllUsersPaginatedUseCase {
   constructor(private readonly repository: UserRepository) {}
 

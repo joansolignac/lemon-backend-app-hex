@@ -11,4 +11,11 @@ export class PaginatedParams {
       : 10;
     return new PaginatedParams(normalizedPage, normalizedLimit);
   }
+
+  toPrimitives(): { page: number; limit: number } {
+    return {
+      page: this.page,
+      limit: this.limit,
+    };
+  }
 }
