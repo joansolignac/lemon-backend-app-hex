@@ -15,6 +15,7 @@ import { JWT_CONFIG } from './shared/infrastructure/config/jwt.config';
       isGlobal: true,
       load: [APP_CONFIG, DATABASE_CONFIG, JWT_CONFIG],
       validationSchema: VALIDATION_SCHEMA,
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     UsersModule,
