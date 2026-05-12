@@ -43,6 +43,38 @@ const errorCodeToHttpStatus: Record<DomainErrorCode, HttpStatus> = {
 
   [DomainErrorCode.PAGINATED_RESULT_DATA_INVALID]: HttpStatus.BAD_REQUEST,
   [DomainErrorCode.PAGINATED_RESULT_TOTAL_INVALID]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.CUSTOMER_NOT_FOUND]: HttpStatus.NOT_FOUND,
+  [DomainErrorCode.CUSTOMER_ALREADY_ACTIVE]: HttpStatus.CONFLICT,
+  [DomainErrorCode.CUSTOMER_ALREADY_INACTIVE]: HttpStatus.CONFLICT,
+  [DomainErrorCode.CUSTOMER_ALREADY_EXISTS]: HttpStatus.CONFLICT,
+  [DomainErrorCode.CUSTOMER_UPDATE_NO_CHANGES_DETECTED]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.CUSTOMER_ID_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.CUSTOMER_ID_INVALID_FORMAT]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.CUSTOMER_NAME_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.CUSTOMER_NAME_TOO_LONG]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.CUSTOMER_NAME_INVALID_FORMAT]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.CUSTOMER_TYPE_DOCUMENT_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.CUSTOMER_TYPE_DOCUMENT_INVALID]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.CUSTOMER_NUM_DOCUMENT_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.CUSTOMER_NUM_DOCUMENT_INVALID_FORMAT]:
+    HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.CUSTOMER_PHONE_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.CUSTOMER_PHONE_INVALID_FORMAT]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.CUSTOMER_EMAIL_INVALID_FORMAT]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.CUSTOMER_ADDRESS_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.CUSTOMER_ADDRESS_TOO_LONG]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.CUSTOMER_ADDRESS_INVALID_FORMAT]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.CUSTOMER_STATUS_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.CUSTOMER_STATUS_INVALID]: HttpStatus.BAD_REQUEST,
 };
 
 @Catch(DomainException)

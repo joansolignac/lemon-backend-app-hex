@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
+import { CustomersModule } from './customers/customers.module';
 import { PrismaModule } from './shared/infrastructure/persistence/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { APP_CONFIG } from './shared/infrastructure/config/app.config';
@@ -19,6 +20,7 @@ import { JWT_CONFIG } from './shared/infrastructure/config/jwt.config';
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     UsersModule,
+    CustomersModule,
     PrismaModule,
     HashModule,
     AuthModule,

@@ -24,3 +24,18 @@ model User {
   @@map("users")
 }
 
+model Customer {
+  id           String   @id
+  name         String
+  typeDocument String   @map("type_document")
+  numDocument  String   @unique @map("num_document")
+  phone        String   @unique
+  email        String?  @unique
+  address      String
+  status       String
+  createdAt    DateTime @map("created_at")
+  updatedAt    DateTime @map("updated_at")
+
+  @@map("customers")
+}
+
