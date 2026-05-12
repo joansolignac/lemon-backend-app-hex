@@ -75,6 +75,27 @@ const errorCodeToHttpStatus: Record<DomainErrorCode, HttpStatus> = {
 
   [DomainErrorCode.CUSTOMER_STATUS_REQUIRED]: HttpStatus.BAD_REQUEST,
   [DomainErrorCode.CUSTOMER_STATUS_INVALID]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.SALE_NOT_FOUND]: HttpStatus.NOT_FOUND,
+  [DomainErrorCode.INVALID_SALE_OPERATION]: HttpStatus.CONFLICT,
+  [DomainErrorCode.SALE_UPDATE_NO_CHANGES_DETECTED]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.SALE_ID_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.SALE_ID_INVALID_FORMAT]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.SALE_KILOGRAMS_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.SALE_KILOGRAMS_INVALID_FORMAT]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.SALE_KILOGRAMS_MUST_BE_POSITIVE]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.SALE_PRICE_PER_KILOGRAM_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.SALE_PRICE_PER_KILOGRAM_INVALID_FORMAT]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.SALE_PRICE_PER_KILOGRAM_MUST_BE_POSITIVE]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.SALE_TOTAL_AMOUNT_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.SALE_TOTAL_AMOUNT_INVALID_FORMAT]: HttpStatus.BAD_REQUEST,
+
+  [DomainErrorCode.SALE_PAYMENT_STATUS_REQUIRED]: HttpStatus.BAD_REQUEST,
+  [DomainErrorCode.SALE_PAYMENT_STATUS_INVALID]: HttpStatus.BAD_REQUEST,
 };
 
 @Catch(DomainException)

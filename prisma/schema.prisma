@@ -20,6 +20,7 @@ model User {
   status String
   createdAt DateTime @map("created_at")
   updatedAt DateTime @map("updated_at")
+  sales Sale[] @relation("SellerSales")
 
   @@map("users")
 }
@@ -35,7 +36,25 @@ model Customer {
   status       String
   createdAt    DateTime @map("created_at")
   updatedAt    DateTime @map("updated_at")
+  sales Sale[] @relation("CustomerSales")
 
   @@map("customers")
+}
+
+model Sale {
+  id               String   @id
+  customerId       String   @map("customer_id")
+  sellerId         String   @map("seller_id")
+  kilograms        Decimal  @db.Decimal(10, 2)
+  pricePerKilogram Decimal  @db.Decimal(10, 2) @map("price_per_kilogram")
+  totalAmount      Decimal  @db.Decimal(10, 2) @map("total_amount")
+  paymentStatus    String   @map("payment_status")
+  createdAt        DateTime @map("created_at")
+  updatedAt        DateTime @map("updated_at")
+
+  customer Customer @relation("CustomerSales", fields: [customerId], references: [id])
+  seller   User     @relation("SellerSales", fields: [sellerId], references: [id])
+
+  @@map("sales")
 }
 

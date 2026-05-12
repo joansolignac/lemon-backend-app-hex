@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { CustomersModule } from './customers/customers.module';
+import { SalesModule } from './sales/sales.module';
 import { PrismaModule } from './shared/infrastructure/persistence/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { APP_CONFIG } from './shared/infrastructure/config/app.config';
@@ -21,6 +22,7 @@ import { JWT_CONFIG } from './shared/infrastructure/config/jwt.config';
     }),
     UsersModule,
     CustomersModule,
+    SalesModule,
     PrismaModule,
     HashModule,
     AuthModule,
