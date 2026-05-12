@@ -1,11 +1,13 @@
+import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserFinderService } from '../services/user-finder.service';
-import { Injectable } from '@nestjs/common';
 import { UserHashedPassword } from '../../domain/value-objects/user-hashed-password.value-object';
 import { HashService } from '../../../shared/domain/services/hash.service';
 
 @Injectable()
 export class UpdateUserPasswordUseCase {
+  private readonly logger = new Logger(UpdateUserPasswordUseCase.name);
+
   constructor(
     private readonly repository: UserRepository,
     private readonly userFinder: UserFinderService,
@@ -22,5 +24,7 @@ export class UpdateUserPasswordUseCase {
     user.updatePassword(userHashedPassword);
 
     await this.repository.save(user);
+
+    this.logger.log(`User password updated: ID=${user.getId().toPrimitives()}`);
   }
 }

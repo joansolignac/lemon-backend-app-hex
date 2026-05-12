@@ -1,10 +1,12 @@
+import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserFinderService } from '../services/user-finder.service';
 import { UserRole } from '../../domain/value-objects/user-rol.value-object';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UpdateUserRoleUseCase {
+  private readonly logger = new Logger(UpdateUserRoleUseCase.name);
+
   constructor(
     private readonly repository: UserRepository,
     private readonly userFinder: UserFinderService,
@@ -18,5 +20,9 @@ export class UpdateUserRoleUseCase {
     user.updateRole(useRole);
 
     await this.repository.save(user);
+
+    this.logger.log(
+      `User role updated: ID=${user.getId().toPrimitives()}, New Role=${role}`,
+    );
   }
 }

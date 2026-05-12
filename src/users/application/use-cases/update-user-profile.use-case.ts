@@ -1,12 +1,14 @@
+import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserFinderService } from '../services/user-finder.service';
 import { UserName } from '../../domain/value-objects/user-name.value-object';
 import { UserEmail } from '../../domain/value-objects/user-email.value-object';
-import { Injectable } from '@nestjs/common';
 import { UserEmailAlreadyExistsException } from '../../domain/exceptions/user-email-already-exists.exception';
 
 @Injectable()
 export class UpdateUserProfileUseCase {
+  private readonly logger = new Logger(UpdateUserProfileUseCase.name);
+
   constructor(
     private readonly repository: UserRepository,
     private readonly userFinder: UserFinderService,
@@ -40,5 +42,9 @@ export class UpdateUserProfileUseCase {
     });
 
     await this.repository.save(user);
+
+    this.logger.log(
+      `User profile updated: ID=${user.getId().toPrimitives()}, Updated fields: ${Object.keys(params).join(', ')}`,
+    );
   }
 }

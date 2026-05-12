@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 import { User } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
@@ -8,6 +8,8 @@ import { HashService } from '../../../shared/domain/services/hash.service';
 
 @Injectable()
 export class CreateUserUseCase {
+  private readonly logger = new Logger(CreateUserUseCase.name);
+
   constructor(
     private readonly repository: UserRepository,
     private readonly hashService: HashService,
@@ -37,5 +39,9 @@ export class CreateUserUseCase {
     });
 
     await this.repository.save(user);
+
+    this.logger.log(
+      `User created: ID=${user.getId().toPrimitives()}, Name=${user.getName().toPrimitives()}, Email=${user.getEmail().toPrimitives()}, Role=${user.getRole().toPrimitives()}`,
+    );
   }
 }

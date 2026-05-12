@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 
 dotenv.config({
-  path: '.env.development',
+  path: '.env.production.development',
 });
 
 import * as argon2 from 'argon2';
