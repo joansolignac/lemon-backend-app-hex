@@ -2,12 +2,23 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiParam,
+  ApiQuery,
+  ApiBody,
+} from '@nestjs/swagger';
 import { UserCreateDto } from '../dtos/request/user-create.dto';
 import { CreateUserUseCase } from '../../../application/use-cases/create-user.use-case';
 import { UserResponseDto } from '../dtos/response/user-response.dto';
@@ -28,6 +39,7 @@ import { ROLE } from '../../../domain/value-objects/user-rol.value-object';
 import { CurrentUser } from '../../../../shared/infrastructure/security/auth/decorators/current-user.decorator';
 import { AuthenticatedUser } from '../../../../shared/domain/value-objects/authenticated-user.value-object';
 
+@ApiTags('Users')
 @Controller('users')
 export class UserController {
   constructor(
@@ -41,6 +53,15 @@ export class UserController {
   ) {}
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Crear un nuevo usuario' })
+  @ApiBody({ type: UserCreateDto })
+  @ApiResponse({ status: 201, description: 'Usuario creado exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos de entrada invalidos' })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  @ApiResponse({ status: 403, description: 'Sin permisos suficientes' })
+  @ApiResponse({ status: 409, description: 'El email ya existe' })
   @UseAuth(ROLE.ADMINISTRADOR)
   async create(@Body() dto: UserCreateDto): Promise<void> {
     await this.createUserUseCase.execute({
@@ -52,6 +73,22 @@ export class UserController {
   }
 
   @Get('/:id')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener usuario por ID' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    format: 'uuid',
+    description: 'UUID del usuario',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuario encontrado',
+    type: UserResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  @ApiResponse({ status: 403, description: 'Sin permisos suficientes' })
+  @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
   @UseAuth(ROLE.ADMINISTRADOR)
   async findById(
     @Param('id', ParseUUIDPipe) id: string,
@@ -61,6 +98,16 @@ export class UserController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Listar usuarios paginados' })
+  @ApiQuery({ type: PaginatedQueryDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de usuarios',
+    type: PaginatedResponseDto<UserResponseDto>,
+  })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  @ApiResponse({ status: 403, description: 'Sin permisos suficientes' })
   @UseAuth(ROLE.ADMINISTRADOR)
   async getAllPaginated(
     @Query() query: PaginatedQueryDto,
@@ -79,6 +126,14 @@ export class UserController {
   }
 
   @Patch('/profile')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Actualizar perfil del usuario autenticado' })
+  @ApiBody({ type: UpdateUserProfileDto })
+  @ApiResponse({ status: 204, description: 'Perfil actualizado exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos de entrada invalidos' })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  @ApiResponse({ status: 403, description: 'Sin permisos suficientes' })
   @UseAuth(ROLE.ADMINISTRADOR, ROLE.SUPERVISOR)
   async updateProfile(
     @CurrentUser() currentUser: AuthenticatedUser,
@@ -90,8 +145,19 @@ export class UserController {
     });
   }
 
-  @UseAuth(ROLE.ADMINISTRADOR, ROLE.SUPERVISOR)
   @Patch('/password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Actualizar contrasena del usuario autenticado' })
+  @ApiBody({ type: UpdateUserPasswordDto })
+  @ApiResponse({
+    status: 204,
+    description: 'Contrasena actualizada exitosamente',
+  })
+  @ApiResponse({ status: 400, description: 'Datos de entrada invalidos' })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  @ApiResponse({ status: 403, description: 'Sin permisos suficientes' })
+  @UseAuth(ROLE.ADMINISTRADOR, ROLE.SUPERVISOR)
   async updatePassword(
     @CurrentUser() currentUser: AuthenticatedUser,
     @Body() dto: UpdateUserPasswordDto,
@@ -102,14 +168,42 @@ export class UserController {
     );
   }
 
-  @UseAuth(ROLE.ADMINISTRADOR)
   @Patch('/:id/activate')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Activar un usuario' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    format: 'uuid',
+    description: 'UUID del usuario',
+  })
+  @ApiResponse({ status: 204, description: 'Usuario activado exitosamente' })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  @ApiResponse({ status: 403, description: 'Sin permisos suficientes' })
+  @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
+  @ApiResponse({ status: 409, description: 'El usuario ya esta activo' })
+  @UseAuth(ROLE.ADMINISTRADOR)
   async activate(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.activateUserUseCase.execute(id);
   }
 
-  @UseAuth(ROLE.ADMINISTRADOR)
   @Patch('/:id/deactivate')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Desactivar un usuario' })
+  @ApiParam({
+    name: 'id',
+    type: 'string',
+    format: 'uuid',
+    description: 'UUID del usuario',
+  })
+  @ApiResponse({ status: 204, description: 'Usuario desactivado exitosamente' })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  @ApiResponse({ status: 403, description: 'Sin permisos suficientes' })
+  @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
+  @ApiResponse({ status: 409, description: 'El usuario ya esta inactivo' })
+  @UseAuth(ROLE.ADMINISTRADOR)
   async deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.deactivateUserUseCase.execute(id);
   }

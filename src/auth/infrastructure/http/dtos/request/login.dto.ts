@@ -7,8 +7,14 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginDto {
+  @ApiProperty({
+    example: 'juan@example.com',
+    description: 'Correo electronico del usuario',
+    maxLength: 255,
+  })
   @IsString()
   @IsNotEmpty()
   @IsEmail()
@@ -18,6 +24,12 @@ export class LoginDto {
   )
   declare readonly email: string;
 
+  @ApiProperty({
+    example: 'SecureP@ssw0rd',
+    description: 'Contrasena del usuario',
+    minLength: 8,
+    maxLength: 100,
+  })
   @IsString()
   @IsNotEmpty()
   @MinLength(8)

@@ -1,14 +1,14 @@
-import { UserId } from '../value-objects/user-id.value-object.js';
-import { UserName } from '../value-objects/user-name.value-object.js';
-import { UserEmail } from '../value-objects/user-email.value-object.js';
-import { UserHashedPassword } from '../value-objects/user-hashed-password.value-object.js';
-import { UserStatus } from '../value-objects/user-status.value-object.js';
-import { UserRole } from '../value-objects/user-rol.value-object.js';
-import { UserUpdateNoChangesDetectedException } from '../exceptions/user-update-no-changes-detected.exception.js';
-import { UserRolAlreadyHasException } from '../exceptions/user-rol-already-has.exception.js';
-import { UserAlreadyInactiveException } from '../exceptions/user-already-inactive.exception.js';
-import { UserAlreadyActiveException } from '../exceptions/user-already-active.exception.js';
-import { UserInactiveException } from '../exceptions/user-inactive.exception.js';
+import { UserId } from '../value-objects/user-id.value-object';
+import { UserName } from '../value-objects/user-name.value-object';
+import { UserEmail } from '../value-objects/user-email.value-object';
+import { UserHashedPassword } from '../value-objects/user-hashed-password.value-object';
+import { UserStatus } from '../value-objects/user-status.value-object';
+import { UserRole } from '../value-objects/user-rol.value-object';
+import { UserUpdateNoChangesDetectedException } from '../exceptions/user-update-no-changes-detected.exception';
+import { UserRolAlreadyHasException } from '../exceptions/user-rol-already-has.exception';
+import { UserAlreadyInactiveException } from '../exceptions/user-already-inactive.exception';
+import { UserAlreadyActiveException } from '../exceptions/user-already-active.exception';
+import { UserInactiveException } from '../exceptions/user-inactive.exception';
 
 export class User {
   private constructor(

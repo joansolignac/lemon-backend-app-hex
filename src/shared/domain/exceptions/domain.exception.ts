@@ -1,4 +1,4 @@
-import { DomainErrorCode } from './error-code.enum.js';
+import { DomainErrorCode } from './error-code.enum';
 
 export abstract class DomainException extends Error {
   protected constructor(

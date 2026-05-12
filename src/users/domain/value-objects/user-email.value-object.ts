@@ -1,5 +1,5 @@
-import { UserEmailRequiredException } from '../exceptions/user-email-required.exception.js';
-import { UserEmailInvalidFormatException } from '../exceptions/user-email-invalid-format.exception.js';
+import { UserEmailRequiredException } from '../exceptions/user-email-required.exception';
+import { UserEmailInvalidFormatException } from '../exceptions/user-email-invalid-format.exception';
 
 export class UserEmail {
   private static readonly EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

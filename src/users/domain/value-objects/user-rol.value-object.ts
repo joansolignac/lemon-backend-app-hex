@@ -1,5 +1,5 @@
-import { UserRoleRequiredException } from '../exceptions/user-role-required.exception.js';
-import { UserRoleInvalidException } from '../exceptions/user-role-invalid.exception.js';
+import { UserRoleRequiredException } from '../exceptions/user-role-required.exception';
+import { UserRoleInvalidException } from '../exceptions/user-role-invalid.exception';
 
 export const ROLE = {
   ADMINISTRADOR: 'ADMINISTRADOR',

@@ -1,5 +1,5 @@
-import { DomainException } from '../../../shared/domain/exceptions/domain.exception.js';
-import { DomainErrorCode } from '../../../shared/domain/exceptions/error-code.enum.js';
+import { DomainException } from '../../../shared/domain/exceptions/domain.exception';
+import { DomainErrorCode } from '../../../shared/domain/exceptions/error-code.enum';
 
 export class UserNotFoundException extends DomainException {
   constructor() {

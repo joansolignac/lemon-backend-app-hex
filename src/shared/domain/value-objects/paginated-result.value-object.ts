@@ -1,6 +1,6 @@
-import { PaginatedParams } from './paginated-params.value-object.js';
-import { PaginatedResultDataInvalidException } from '../exceptions/paginated-result-data-invalid.exception.js';
-import { PaginatedResultTotalInvalidException } from '../exceptions/paginated-result-total-invalid.exception.js';
+import { PaginatedParams } from './paginated-params.value-object';
+import { PaginatedResultDataInvalidException } from '../exceptions/paginated-result-data-invalid.exception';
+import { PaginatedResultTotalInvalidException } from '../exceptions/paginated-result-total-invalid.exception';
 
 export class PaginatedResult<T> {
   private constructor(

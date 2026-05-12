@@ -1,5 +1,5 @@
-import { DomainException } from './domain.exception.js';
-import { DomainErrorCode } from './error-code.enum.js';
+import { DomainException } from './domain.exception';
+import { DomainErrorCode } from './error-code.enum';
 
 export class PaginatedResultTotalInvalidException extends DomainException {
   constructor() {

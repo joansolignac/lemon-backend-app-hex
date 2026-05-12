@@ -1,5 +1,5 @@
-import { UserStatusRequiredException } from '../exceptions/user-status-required.exception.js';
-import { UserStatusInvalidException } from '../exceptions/user-status-invalid.exception.js';
+import { UserStatusRequiredException } from '../exceptions/user-status-required.exception';
+import { UserStatusInvalidException } from '../exceptions/user-status-invalid.exception';
 
 export const USER_STATUS = {
   ACTIVE: 'ACTIVE',

@@ -13,10 +13,6 @@ import { RolesGuard } from './guards/roles.guard';
     JwtRefreshTokenGuard,
     RolesGuard,
   ],
-  exports: [
-    JwtAccessTokenGuard,
-    JwtRefreshTokenGuard,
-    RolesGuard,
-  ],
+  exports: [JwtAccessTokenGuard, JwtRefreshTokenGuard, RolesGuard],
 })
 export class AuthSharedModule {}

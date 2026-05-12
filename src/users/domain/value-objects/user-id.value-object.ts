@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { UserIdRequiredException } from '../exceptions/user-id-required.exception.js';
-import { UserIdInvalidFormatException } from '../exceptions/user-id-invalid-format.exception.js';
+import { UserIdRequiredException } from '../exceptions/user-id-required.exception';
+import { UserIdInvalidFormatException } from '../exceptions/user-id-invalid-format.exception';
 
 export class UserId {
   private static readonly UUID_REGEX =

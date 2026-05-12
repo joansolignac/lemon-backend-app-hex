@@ -1,6 +1,6 @@
-import { UserNameRequiredException } from '../exceptions/user-name-required.exception.js';
-import { UserNameTooLongException } from '../exceptions/user-name-too-long.exception.js';
-import { UserNameInvalidFormatException } from '../exceptions/user-name-invalid-format.exception.js';
+import { UserNameRequiredException } from '../exceptions/user-name-required.exception';
+import { UserNameTooLongException } from '../exceptions/user-name-too-long.exception';
+import { UserNameInvalidFormatException } from '../exceptions/user-name-invalid-format.exception';
 
 export class UserName {
   private static readonly NAME_REGEX = /^[A-ZÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÑ' ]+$/;

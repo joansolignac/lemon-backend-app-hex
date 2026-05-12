@@ -1,6 +1,6 @@
-import { UserHashedPasswordRequiredException } from '../exceptions/user-hashed-password-required.exception.js';
-import { UserHashedPasswordTooLongException } from '../exceptions/user-hashed-password-too-long.exception.js';
-import { UserHashedPasswordInvalidFormatException } from '../exceptions/user-hashed-password-invalid-format.exception.js';
+import { UserHashedPasswordRequiredException } from '../exceptions/user-hashed-password-required.exception';
+import { UserHashedPasswordTooLongException } from '../exceptions/user-hashed-password-too-long.exception';
+import { UserHashedPasswordInvalidFormatException } from '../exceptions/user-hashed-password-invalid-format.exception';
 
 export class UserHashedPassword {
   private static readonly HASH_REGEX = /^\$argon2(id|i|d)\$.*$/;
