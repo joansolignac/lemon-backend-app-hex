@@ -33,6 +33,6 @@ import { AuthSharedModule } from '../shared/infrastructure/security/auth/auth-sh
     },
   ],
   controllers: [UserController],
-  exports: [UserRepository, FindUserByIdUseCase],
+  exports: [UserRepository, FindUserByIdUseCase, UserFinderService],
 })
 export class UsersModule {}

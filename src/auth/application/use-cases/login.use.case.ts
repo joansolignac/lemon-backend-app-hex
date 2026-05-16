@@ -1,8 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { JwtTokens } from '../../domain/value-objects/jwt-tokens.value-object';
 import { ValidateCredentialsService } from '../services/validate-credentials.service';
 import { UserPayload } from '../../domain/value-objects/user-payload.value-object';
 import { TokenService } from '../../domain/services/token.service';
+import { AuthenticatedSession } from '../../domain/value-objects/authenticated-session.value-object';
+import { SessionUser } from '../../domain/value-objects/session-user.value-object';
 
 @Injectable()
 export class LoginUseCase {
@@ -16,7 +17,7 @@ export class LoginUseCase {
   async execute(params: {
     email: string;
     password: string;
-  }): Promise<JwtTokens> {
+  }): Promise<AuthenticatedSession> {
     const user = await this.validateCredentialsService.validate(
       params.email,
       params.password,
@@ -32,6 +33,20 @@ export class LoginUseCase {
       `User logged in: ${user.getEmail().toPrimitives()} (ID: ${user.getId().toPrimitives()}, Role: ${user.getRole().toPrimitives()})`,
     );
 
-    return await this.tokenService.generateTokens(payload);
+    const { accessToken, refreshToken } = await this.tokenService.generateTokens(payload);
+
+    const sessionUser = SessionUser.create({
+      id: user.getId().toPrimitives(),
+      fullName: user.getName().toPrimitives(),
+      email: user.getEmail().toPrimitives(),
+      role: user.getRole().toPrimitives(),
+      isActive: user.getStatus().isActive(),
+    });
+
+    return AuthenticatedSession.create({
+      accessToken,
+      refreshToken,
+      user: sessionUser,
+    });
   }
 }
