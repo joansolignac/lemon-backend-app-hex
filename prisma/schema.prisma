@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,50 +6,74 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  ADMINISTRADOR
+  SUPERVISOR
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum TypeDocument {
+  DNI
+  RUC
+}
+
+enum PaymentStatus {
+  PENDIENTE
+  PAGADO
+}
+
 model User {
-  id String @id
-  role String
-  name String
-  email String @unique
+  id             String     @id
+  role           Role
+  name           String
+  email          String     @unique
   hashedPassword String
-  status String
-  createdAt DateTime @map("created_at")
-  updatedAt DateTime @map("updated_at")
-  sales Sale[] @relation("SellerSales")
+  status         UserStatus
+  createdAt      DateTime   @map("created_at")
+  updatedAt      DateTime   @map("updated_at")
+  sales          Sale[]     @relation("SellerSales")
 
   @@map("users")
 }
 
 model Customer {
-  id           String   @id
+  id           String         @id
   name         String
-  typeDocument String   @map("type_document")
-  numDocument  String   @unique @map("num_document")
-  phone        String   @unique
-  email        String?  @unique
+  typeDocument TypeDocument   @map("type_document")
+  numDocument  String         @unique @map("num_document")
+  phone        String         @unique
+  email        String?        @unique
   address      String
-  status       String
-  createdAt    DateTime @map("created_at")
-  updatedAt    DateTime @map("updated_at")
-  sales Sale[] @relation("CustomerSales")
+  status       CustomerStatus
+  createdAt    DateTime       @map("created_at")
+  updatedAt    DateTime       @map("updated_at")
+  sales        Sale[]         @relation("CustomerSales")
 
   @@map("customers")
 }
 
 model Sale {
-  id               String   @id
-  customerId       String   @map("customer_id")
-  sellerId         String   @map("seller_id")
-  kilograms        Decimal  @db.Decimal(10, 2)
-  pricePerKilogram Decimal  @db.Decimal(10, 2) @map("price_per_kilogram")
-  totalAmount      Decimal  @db.Decimal(10, 2) @map("total_amount")
-  paymentStatus    String   @map("payment_status")
-  createdAt        DateTime @map("created_at")
-  updatedAt        DateTime @map("updated_at")
+  id               String        @id
+  customerId       String        @map("customer_id")
+  sellerId         String        @map("seller_id")
+  kilograms        Decimal       @db.Decimal(10, 2)
+  pricePerKilogram Decimal       @db.Decimal(10, 2) @map("price_per_kilogram")
+  totalAmount      Decimal       @db.Decimal(10, 2) @map("total_amount")
+  paymentStatus    PaymentStatus @map("payment_status")
+  createdAt        DateTime      @map("created_at")
+  updatedAt        DateTime      @map("updated_at")
 
   customer Customer @relation("CustomerSales", fields: [customerId], references: [id])
   seller   User     @relation("SellerSales", fields: [sellerId], references: [id])
 
   @@map("sales")
 }
-
