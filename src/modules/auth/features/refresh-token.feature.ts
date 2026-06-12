@@ -5,18 +5,7 @@ import { UserStatus } from '@prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { ensureUserById } from '../../../modules/users/utils/user.util';
 import type { AuthCurrentUser } from '../../../common/interfaces/auth-current-user.interface';
-
-type RefreshResult = {
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    fullName: string;
-    email: string;
-    role: string;
-    isActive: boolean;
-  };
-};
+import type { RefreshResult } from '../types/refresh-result.type';
 
 @Injectable()
 export class RefreshTokenFeature {
