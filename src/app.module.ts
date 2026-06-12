@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
-import { CustomersModule } from './customers/customers.module';
-import { SalesModule } from './sales/sales.module';
-import { PrismaModule } from './shared/infrastructure/persistence/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
-import { APP_CONFIG } from './shared/infrastructure/config/app.config';
-import { DATABASE_CONFIG } from './shared/infrastructure/config/database.config';
-import { VALIDATION_SCHEMA } from './shared/infrastructure/config/schema/validation.schema';
-import { HashModule } from './shared/infrastructure/security/hash/hash.module';
-import { AuthModule } from './auth/auth.module';
-import { JWT_CONFIG } from './shared/infrastructure/config/jwt.config';
+import { APP_CONFIG } from './common/config/app.config';
+import { DATABASE_CONFIG } from './common/config/database.config';
+import { JWT_CONFIG } from './common/config/jwt.config';
+import { VALIDATION_SCHEMA } from './common/config/schema/validation.schema';
+import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { CustomersModule } from './modules/customers/customers.module';
+import { SalesModule } from './modules/sales/sales.module';
 
 @Module({
   imports: [
@@ -20,12 +19,11 @@ import { JWT_CONFIG } from './shared/infrastructure/config/jwt.config';
       ignoreEnvFile: process.env.NODE_ENV === 'production',
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    PrismaModule,
+    AuthModule,
     UsersModule,
     CustomersModule,
     SalesModule,
-    PrismaModule,
-    HashModule,
-    AuthModule,
   ],
 })
 export class AppModule {}
