@@ -7,17 +7,11 @@ export class SaleResponseDto {
   })
   declare readonly id: string;
 
-  @ApiProperty({
-    example: '550e8400-e29b-41d4-a716-446655440001',
-    description: 'ID del cliente',
-  })
-  declare readonly customerId: string;
+  @ApiProperty({ example: 'María López', description: 'Nombre del cliente' })
+  declare readonly customerName: string;
 
-  @ApiProperty({
-    example: '550e8400-e29b-41d4-a716-446655440002',
-    description: 'ID del vendedor',
-  })
-  declare readonly sellerId: string;
+  @ApiProperty({ example: 'Carlos Ríos', description: 'Nombre del vendedor' })
+  declare readonly sellerName: string;
 
   @ApiProperty({ example: 15.5, description: 'Kilogramos vendidos' })
   declare readonly kilograms: number;

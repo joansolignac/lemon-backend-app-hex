@@ -21,10 +21,11 @@ import {
 } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import { UseAuth } from '../auth/decorators/use-auth.decorator';
-import { PaginatedQueryDto } from '../../common/dtos/paginated-query.dto';
+import { ListCustomersQueryDto } from './dtos/request/list-customers.query.dto';
 import { CreateCustomerRequestDto } from './dtos/request/create-customer.request.dto';
 import { UpdateCustomerRequestDto } from './dtos/request/update-customer.request.dto';
 import { CustomerResponseDto } from './dtos/response/customer.response.dto';
+import { CustomerPaginatedResponseDto } from './dtos/response/customer-paginated.response.dto';
 import { CreateCustomerFeature } from './features/create-customer.feature';
 import { FindCustomerByIdFeature } from './features/find-customer-by-id.feature';
 import { FindCustomerByNumDocumentFeature } from './features/find-customer-by-num-document.feature';
@@ -115,12 +116,18 @@ export class CustomersController {
   @Get()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Listar clientes paginados' })
-  @ApiQuery({ type: PaginatedQueryDto })
-  @ApiResponse({ status: 200, description: 'Lista de clientes' })
+  @ApiResponse({ status: 200, type: CustomerPaginatedResponseDto })
   @ApiResponse({ status: 401, description: 'No autenticado' })
   @UseAuth(Role.ADMINISTRADOR, Role.SUPERVISOR)
-  async getAllPaginated(@Query() query: PaginatedQueryDto) {
-    return this.getAllCustomersPaginated.execute(query.page, query.limit);
+  async getAllPaginated(
+    @Query() query: ListCustomersQueryDto,
+  ): Promise<CustomerPaginatedResponseDto> {
+    return this.getAllCustomersPaginated.execute({
+      search: query.search,
+      status: query.status,
+      page: query.page,
+      limit: query.limit,
+    });
   }
 
   @Patch('/:id')

@@ -5,13 +5,7 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { ensureCustomerById } from '../../customers/utils/customer.util';
 import { ensureUserById } from '../../users/utils/user.util';
 import { InvalidSaleOperationException } from '../exceptions/invalid-sale-operation.exception';
-
-type CreateSaleInput = {
-  customerId: string;
-  sellerId: string;
-  kilograms: number;
-  pricePerKilogram: number;
-};
+import type { CreateSaleInput } from '../types/create-sale-input.type';
 
 @Injectable()
 export class CreateSaleFeature {

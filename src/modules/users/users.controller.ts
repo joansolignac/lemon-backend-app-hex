@@ -17,18 +17,18 @@ import {
   ApiBearerAuth,
   ApiParam,
   ApiBody,
-  ApiQuery,
 } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import { UseAuth } from '../auth/decorators/use-auth.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import type { AuthCurrentUser } from '../../common/interfaces/auth-current-user.interface';
-import { PaginatedQueryDto } from '../../common/dtos/paginated-query.dto';
+import { ListUsersQueryDto } from './dtos/request/list-users.query.dto';
 import { CreateUserRequestDto } from './dtos/request/create-user.request.dto';
 import { UpdateUserProfileRequestDto } from './dtos/request/update-user-profile.request.dto';
 import { UpdateUserPasswordRequestDto } from './dtos/request/update-user-password.request.dto';
 import { UpdateUserRoleRequestDto } from './dtos/request/update-user-role.request.dto';
 import { UserResponseDto } from './dtos/response/user.response.dto';
+import { UserPaginatedResponseDto } from './dtos/response/user-paginated.response.dto';
 import { CreateUserFeature } from './features/create-user.feature';
 import { FindUserByIdFeature } from './features/find-user-by-id.feature';
 import { GetAllUsersPaginatedFeature } from './features/get-all-users-paginated.feature';
@@ -90,13 +90,19 @@ export class UsersController {
   @Get()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Listar usuarios paginados' })
-  @ApiQuery({ type: PaginatedQueryDto })
-  @ApiResponse({ status: 200, description: 'Lista de usuarios' })
+  @ApiResponse({ status: 200, type: UserPaginatedResponseDto })
   @ApiResponse({ status: 401, description: 'No autenticado' })
   @ApiResponse({ status: 403, description: 'Sin permisos suficientes' })
   @UseAuth(Role.ADMINISTRADOR)
-  async getAllPaginated(@Query() query: PaginatedQueryDto) {
-    return this.getAllUsersPaginated.execute(query.page, query.limit);
+  async getAllPaginated(
+    @Query() query: ListUsersQueryDto,
+  ): Promise<UserPaginatedResponseDto> {
+    return this.getAllUsersPaginated.execute({
+      search: query.search,
+      status: query.status,
+      page: query.page,
+      limit: query.limit,
+    });
   }
 
   @Patch('/profile')
@@ -147,7 +153,10 @@ export class UsersController {
   @ApiBody({ type: UpdateUserRoleRequestDto })
   @ApiResponse({ status: 204, description: 'Rol actualizado exitosamente' })
   @ApiResponse({ status: 401, description: 'No autenticado' })
-  @ApiResponse({ status: 403, description: 'Sin permisos suficientes o usuario inactivo' })
+  @ApiResponse({
+    status: 403,
+    description: 'Sin permisos suficientes o usuario inactivo',
+  })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
   @ApiResponse({ status: 409, description: 'El usuario ya tiene ese rol' })
   @UseAuth(Role.ADMINISTRADOR)

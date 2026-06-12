@@ -16,23 +16,18 @@ import {
   ApiResponse,
   ApiBearerAuth,
   ApiParam,
-  ApiQuery,
   ApiBody,
 } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import { UseAuth } from '../auth/decorators/use-auth.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { PaginatedQueryDto } from '../../common/dtos/paginated-query.dto';
 import type { AuthCurrentUser } from '../../common/interfaces/auth-current-user.interface';
+import { ListSalesQueryDto } from './dtos/request/list-sales.query.dto';
 import { CreateSaleRequestDto } from './dtos/request/create-sale.request.dto';
 import { UpdateSaleRequestDto } from './dtos/request/update-sale.request.dto';
-import { SaleResponseDto } from './dtos/response/sale.response.dto';
+import { SalePaginatedResponseDto } from './dtos/response/sale-paginated.response.dto';
 import { CreateSaleFeature } from './features/create-sale.feature';
-import { FindSaleByIdFeature } from './features/find-sale-by-id.feature';
-import { GetAllSalesPaginatedFeature } from './features/get-all-sales-paginated.feature';
-import { FindSalesByCustomerFeature } from './features/find-sales-by-customer.feature';
-import { FindSalesBySellerFeature } from './features/find-sales-by-seller.feature';
-import { FindPendingSalesFeature } from './features/find-pending-sales.feature';
+import { FindSalesFeature } from './features/find-sales.feature';
 import { UpdateSaleFeature } from './features/update-sale.feature';
 import { MarkSaleAsPaidFeature } from './features/mark-sale-as-paid.feature';
 
@@ -42,11 +37,7 @@ import { MarkSaleAsPaidFeature } from './features/mark-sale-as-paid.feature';
 export class SalesController {
   constructor(
     private readonly createSale: CreateSaleFeature,
-    private readonly findSaleById: FindSaleByIdFeature,
-    private readonly getAllSalesPaginated: GetAllSalesPaginatedFeature,
-    private readonly findSalesByCustomer: FindSalesByCustomerFeature,
-    private readonly findSalesBySeller: FindSalesBySellerFeature,
-    private readonly findPendingSales: FindPendingSalesFeature,
+    private readonly findSales: FindSalesFeature,
     private readonly updateSale: UpdateSaleFeature,
     private readonly markSaleAsPaid: MarkSaleAsPaidFeature,
   ) {}
@@ -73,88 +64,33 @@ export class SalesController {
     });
   }
 
-  @Get('/pending')
+  @Get()
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Listar ventas pendientes de pago' })
-  @ApiQuery({ type: PaginatedQueryDto })
-  @ApiResponse({ status: 200, description: 'Lista de ventas pendientes' })
-  @ApiResponse({ status: 401, description: 'No autenticado' })
-  async findPending(@Query() query: PaginatedQueryDto) {
-    return this.findPendingSales.execute(query.page, query.limit);
-  }
-
-  @Get('/customer/:customerId')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Listar ventas por cliente' })
-  @ApiParam({
-    name: 'customerId',
-    type: 'string',
-    format: 'uuid',
-    description: 'UUID del cliente',
-  })
-  @ApiQuery({ type: PaginatedQueryDto })
-  @ApiResponse({ status: 200, description: 'Lista de ventas del cliente' })
-  @ApiResponse({ status: 401, description: 'No autenticado' })
-  async findByCustomer(
-    @Param('customerId', ParseUUIDPipe) customerId: string,
-    @Query() query: PaginatedQueryDto,
-  ) {
-    return this.findSalesByCustomer.execute(
-      customerId,
-      query.page,
-      query.limit,
-    );
-  }
-
-  @Get('/seller/:sellerId')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Listar ventas por vendedor' })
-  @ApiParam({
-    name: 'sellerId',
-    type: 'string',
-    format: 'uuid',
-    description: 'UUID del vendedor',
-  })
-  @ApiQuery({ type: PaginatedQueryDto })
-  @ApiResponse({ status: 200, description: 'Lista de ventas del vendedor' })
-  @ApiResponse({ status: 401, description: 'No autenticado' })
-  async findBySeller(
-    @Param('sellerId', ParseUUIDPipe) sellerId: string,
-    @Query() query: PaginatedQueryDto,
-  ) {
-    return this.findSalesBySeller.execute(sellerId, query.page, query.limit);
-  }
-
-  @Get('/:id')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Obtener venta por ID' })
-  @ApiParam({
-    name: 'id',
-    type: 'string',
-    format: 'uuid',
-    description: 'UUID de la venta',
+  @ApiOperation({
+    summary: 'Buscar ventas',
+    description:
+      'Lista ventas con filtros opcionales. Filtros de fecha mutuamente excluyentes: date | startDate+endDate | month+year | year.',
   })
   @ApiResponse({
     status: 200,
-    description: 'Venta encontrada',
-    type: SaleResponseDto,
+    description: 'Lista de ventas paginada',
+    type: SalePaginatedResponseDto,
   })
   @ApiResponse({ status: 401, description: 'No autenticado' })
-  @ApiResponse({ status: 404, description: 'Venta no encontrada' })
-  async findById(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<SaleResponseDto> {
-    return this.findSaleById.execute(id);
-  }
-
-  @Get()
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Listar todas las ventas paginadas' })
-  @ApiQuery({ type: PaginatedQueryDto })
-  @ApiResponse({ status: 200, description: 'Lista de ventas' })
-  @ApiResponse({ status: 401, description: 'No autenticado' })
-  async getAllPaginated(@Query() query: PaginatedQueryDto) {
-    return this.getAllSalesPaginated.execute(query.page, query.limit);
+  async findAll(
+    @Query() query: ListSalesQueryDto,
+  ): Promise<SalePaginatedResponseDto> {
+    return this.findSales.execute({
+      search: query.search,
+      status: query.status,
+      date: query.date,
+      startDate: query.startDate,
+      endDate: query.endDate,
+      month: query.month,
+      year: query.year,
+      page: query.page,
+      limit: query.limit,
+    });
   }
 
   @Patch('/:id')

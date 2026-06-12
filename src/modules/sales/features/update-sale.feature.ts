@@ -1,14 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PaymentStatus } from '@prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { ensureSaleById } from '../utils/sale.util';
 import { SaleUpdateNoChangesDetectedException } from '../exceptions/sale-update-no-changes-detected.exception';
-
-type UpdateSaleInput = {
-  kilograms?: number;
-  pricePerKilogram?: number;
-  paymentStatus?: PaymentStatus;
-};
+import type { UpdateSaleInput } from '../types/update-sale-input.type';
 
 @Injectable()
 export class UpdateSaleFeature {

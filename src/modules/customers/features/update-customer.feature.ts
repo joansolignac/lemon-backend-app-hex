@@ -3,13 +3,7 @@ import { PrismaService } from '../../../prisma/prisma.service';
 import { ensureCustomerById } from '../utils/customer.util';
 import { CustomerUpdateNoChangesDetectedException } from '../exceptions/customer-update-no-changes-detected.exception';
 import { CustomerAlreadyExistsException } from '../exceptions/customer-already-exists.exception';
-
-type UpdateCustomerInput = {
-  name?: string;
-  phone?: string;
-  email?: string | null;
-  address?: string;
-};
+import type { UpdateCustomerInput } from '../types/update-customer-input.type';
 
 @Injectable()
 export class UpdateCustomerFeature {

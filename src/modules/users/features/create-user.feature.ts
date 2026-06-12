@@ -1,16 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import * as argon2 from 'argon2';
-import { Role, UserStatus } from '@prisma/client';
+import { UserStatus } from '@prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { UserEmailAlreadyExistsException } from '../exceptions/user-email-already-exists.exception';
-
-type CreateUserInput = {
-  role: Role;
-  name: string;
-  email: string;
-  password: string;
-};
+import type { CreateUserInput } from '../types/create-user-input.type';
 
 @Injectable()
 export class CreateUserFeature {

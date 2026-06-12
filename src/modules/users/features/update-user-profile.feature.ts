@@ -5,11 +5,7 @@ import { ensureUserById } from '../utils/user.util';
 import { UserInactiveException } from '../exceptions/user-inactive.exception';
 import { UserUpdateNoChangesDetectedException } from '../exceptions/user-update-no-changes-detected.exception';
 import { UserEmailAlreadyExistsException } from '../exceptions/user-email-already-exists.exception';
-
-type UpdateUserProfileInput = {
-  name?: string;
-  email?: string;
-};
+import type { UpdateUserProfileInput } from '../types/update-user-profile-input.type';
 
 @Injectable()
 export class UpdateUserProfileFeature {

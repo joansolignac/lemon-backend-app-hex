@@ -6,18 +6,7 @@ import { UserStatus } from '@prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { InvalidCredentialsException } from '../exceptions/invalid-credentials.exception';
 import { UserInactiveException } from '../exceptions/user-inactive.exception';
-
-type LoginResult = {
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    fullName: string;
-    email: string;
-    role: string;
-    isActive: boolean;
-  };
-};
+import type { LoginResult } from '../types/login-result.type';
 
 @Injectable()
 export class LoginFeature {

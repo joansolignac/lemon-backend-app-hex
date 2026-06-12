@@ -5,10 +5,12 @@ import { DATABASE_CONFIG } from './common/config/database.config';
 import { JWT_CONFIG } from './common/config/jwt.config';
 import { VALIDATION_SCHEMA } from './common/config/schema/validation.schema';
 import { PrismaModule } from './prisma/prisma.module';
+import { SeederModule } from './seeder/seeder.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { SalesModule } from './modules/sales/sales.module';
+import { MetricsModule } from './modules/metrics/metrics.module';
 
 @Module({
   imports: [
@@ -20,10 +22,12 @@ import { SalesModule } from './modules/sales/sales.module';
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     PrismaModule,
+    SeederModule,
     AuthModule,
     UsersModule,
     CustomersModule,
     SalesModule,
+    MetricsModule,
   ],
 })
 export class AppModule {}

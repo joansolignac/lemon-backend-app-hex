@@ -1,17 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { CustomerStatus, TypeDocument } from '@prisma/client';
+import { CustomerStatus } from '@prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { CustomerAlreadyExistsException } from '../exceptions/customer-already-exists.exception';
-
-type CreateCustomerInput = {
-  name: string;
-  typeDocument: TypeDocument;
-  numDocument: string;
-  phone: string;
-  email: string | null;
-  address: string;
-};
+import type { CreateCustomerInput } from '../types/create-customer-input.type';
 
 @Injectable()
 export class CreateCustomerFeature {
